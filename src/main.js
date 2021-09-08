@@ -3,4 +3,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-createApp(App).use(store).use(router).mount('#app')
+import BaseCard from './components/baseComponents/BaseCard.vue'
+
+const app = createApp(App);
+
+app.component('base-card', BaseCard);
+
+
+app.use(store);
+app.use(router);
+
+
+app.mount('#app');
