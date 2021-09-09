@@ -12,6 +12,7 @@
 
 body {
   height: 100%;
+  background-color: #F2F4FF;
 }
 
 .flex {

@@ -7,10 +7,8 @@
 <style scoped>
 .card {
     border-radius: 10px;
-    /* min-height: 180px;
-    width: 225px; */
     margin: 0 1.5rem 1.5rem 1.5rem;
-    padding: 1.5rem;
+    max-width: 200px;
     background-color: #fff;
 }
 </style>
