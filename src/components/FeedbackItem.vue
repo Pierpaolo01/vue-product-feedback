@@ -2,23 +2,27 @@
   <li class="feedback-container">
     <h3>{{ title }}</h3>
     <p>{{ description }}</p>
-    <h5>{{ type }}</h5>
-    <div class="flex btn-container">
+    <h5>{{ category }}</h5>
+    
       <button id="upVoteCounter">
         <img src="@/assets/icon-arrow-up.svg" alt="upvote" />
         <strong>{{ upvotes }}</strong>
       </button>
       <button id="commentsCounter">
-        <img src="@/assets/icon-comments.svg" alt="comments" /> 
-        <span>{{ comments }}</span>
+        <img src="@/assets/icon-comments.svg" alt="comments" />
+        <span>{{ commentsLength }}</span>
       </button>
-    </div>
+  
   </li>
 </template>
 
 <script>
 export default {
   props: {
+    id: {
+      type: Number,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -27,17 +31,25 @@ export default {
       type: String,
       required: true,
     },
-    type: {
+    category: {
       type: String,
       required: true,
     },
     upvotes: {
-      type: String,
+      type: Number,
       required: true,
     },
     comments: {
-      type: String,
-      required: true,
+      type: Array,
+      required: false,
+    },
+  },
+  computed: {
+    commentsLength() {
+      if (!this.comments) {
+        return 0;
+      }
+      return this.comments.length;
     },
   },
 };
@@ -45,20 +57,37 @@ export default {
 
 <style scoped>
 .feedback-container {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "heading heading"
     "description description"
     "category ."
-    "icons icons";
-
+    "upvotes comments";
   background-color: white;
   border-radius: 10px;
   padding: 25px;
   margin: 0px auto 15px auto;
+}
 
-  
+@media screen and (min-width: 700px) {
+  .feedback-container {
+    grid-template-columns: 4rem auto 2.5rem;
+    grid-template-areas:
+      "upvotes heading comments"
+      "upvotes description comments"
+      ". category comments";
+  }
+  .feedback-container p {
+    /* text-align: center; */
+    
+    margin-left: 25px;
+  }
+   .feedback-container h3 {
+     margin-left: 25px !important;
+   }
+
 }
 
 .feedback-container h3 {
@@ -81,10 +110,10 @@ export default {
   text-align: center;
   grid-area: category;
 }
-.btn-container {
+/* .btn-container {
   justify-content: space-between;
   grid-area: icons;
-}
+} */
 
 #upVoteCounter {
   width: 70px;
@@ -113,11 +142,12 @@ export default {
   text-align: center;
   border-style: none;
   grid-area: comments;
+  position: absolute;
 }
 
-#commentsCounter span{
-margin-left: 10px;
-font-size: 15px;
+#commentsCounter span {
+  margin-left: 10px;
+  font-size: 15px;
 }
 
 #commentsCounter img {

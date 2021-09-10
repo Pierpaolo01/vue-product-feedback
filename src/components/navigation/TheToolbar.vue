@@ -120,8 +120,8 @@ export default {
 @media screen and (min-width: 700px) {
 .toolbar {
   width: 100%;
-  margin: 0 auto;
-  border-radius: 10px;
+  margin: 0 auto 25px auto;
+  border-radius: 15px;
 }
 }
 </style>

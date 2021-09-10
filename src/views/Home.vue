@@ -18,13 +18,13 @@
 
       <ul class="feedback-list">
         <feedback-item
-          v-for="i in 10"
-          :key="i"
-          title="Add tags for solution"
-          description="Easier to search for solutions based on a specific stack."
-          type="Enhancement"
-          upvotes="99"
-          comments="66"
+          v-for="req in productRequests" :key="req.id"
+          :id="req.id"
+          :title="req.title"
+          :description="req.description"
+          :category="req.category"
+          :upvotes="req.upvotes"
+          :comments="req.comments"
         />
       </ul>
     </div>
@@ -51,6 +51,7 @@ export default {
   },
   data() {
     return {
+      productRequests: null,
       mobile: false,
     };
   },
@@ -64,8 +65,21 @@ export default {
 
       this.mobile = true;
     },
+    async getData(){
+      const response = await fetch('https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests.json');
+      const resData = await response.json();
+      if(!response.ok){
+        console.log("error")
+        return;
+      }
+      this.productRequests = resData;
+
+    },
   },
   created() {
+
+    this.getData();
+
     this.checkScreen();
     window.addEventListener("resize", this.checkScreen);
   },
