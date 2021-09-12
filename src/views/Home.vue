@@ -18,7 +18,8 @@
 
       <ul class="feedback-list">
         <feedback-item
-          v-for="req in productRequests" :key="req.id"
+          v-for="req in displayRequests"
+          :key="req.id"
           :id="req.id"
           :title="req.title"
           :description="req.description"
@@ -38,6 +39,7 @@ import TheToolbar from "@/components/navigation/TheToolbar.vue";
 import TheLogo from "@/components/drawers/TheLogo.vue";
 import FilterButtons from "@/components/drawers/FilterButtons.vue";
 import RoadMap from "../components/drawers/RoadMap.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Home",
@@ -62,22 +64,50 @@ export default {
         this.mobile = false;
         return;
       }
-
       this.mobile = true;
     },
-    async getData(){
-      const response = await fetch('https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests.json');
+
+    async getData() {
+      const response = await fetch(
+        "https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests.json"
+      );
       const resData = await response.json();
-      if(!response.ok){
-        console.log("error")
+      if (!response.ok) {
+        console.log("error");
         return;
       }
       this.productRequests = resData;
+    },
+  },
+  computed: {
+    ...mapGetters(["GET_FILTER", "GET_CATEGORY"]),
 
+    displayRequests() {
+      if (this.GET_CATEGORY === "all") {
+        return this.productRequests;
+      }
+      if (this.GET_CATEGORY === "ui") {
+        return this.productRequests.filter((cat) => cat.category === "ui");
+      }
+      if (this.GET_CATEGORY === "ux") {
+        return this.productRequests.filter((cat) => cat.category === "ux");
+      }
+      if (this.GET_CATEGORY === "enhancement") {
+        return this.productRequests.filter(
+          (cat) => cat.category === "enhancement"
+        );
+      }
+      if (this.GET_CATEGORY === "bug") {
+        return this.productRequests.filter((cat) => cat.category === "bug");
+      }
+      if (this.GET_CATEGORY === "feature") {
+        return this.productRequests.filter((cat) => cat.category === "feature");
+      }
+
+      return 1;
     },
   },
   created() {
-
     this.getData();
 
     this.checkScreen();
@@ -92,7 +122,7 @@ export default {
   margin: 10px auto;
 }
 
-@media screen and (min-width: 700px) and ( max-width: 1099px) {
+@media screen and (min-width: 700px) and (max-width: 1099px) {
   header {
     width: 80%;
     margin: 0 auto;
@@ -111,7 +141,7 @@ export default {
   .responsive-head {
     margin: 24px auto 0 auto;
     max-height: 230px;
-    
+
     justify-content: space-around;
   }
 }
@@ -121,7 +151,7 @@ export default {
     flex-direction: column;
     max-width: 250px;
   }
-  .responsive{
+  .responsive {
     max-width: 1100px;
     flex-direction: row;
     margin: 75px auto;
@@ -131,7 +161,7 @@ export default {
     flex: 1;
   }
 
-  .container{
+  .container {
     flex: 3;
   }
 }

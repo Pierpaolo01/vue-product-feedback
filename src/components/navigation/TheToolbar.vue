@@ -4,8 +4,8 @@
       <div>
         <span>
           Sort by
-          <span v-if="isFiltered"
-            >: <strong>{{ isFiltered }}</strong>
+          <span v-if="GET_FILTER"
+            >: <strong>{{ GET_FILTER }}</strong>
           </span>
         </span>
         <img
@@ -22,10 +22,11 @@
         />
       </div>
       <ul v-show="filteredMenu" class="filter-menu">
-        <li @click="filteredInvoice">Most Upvotes</li>
-        <li @click="filteredInvoice">Least Upvotes</li>
-        <li @click="filteredInvoice">Most comments</li>
-        <li @click="filteredInvoice">Least comments</li>
+        <li @click="filterChoice">Default</li>
+        <li @click="filterChoice">Most Upvotes</li>
+        <li @click="filterChoice">Least Upvotes</li>
+        <li @click="filterChoice">Most comments</li>
+        <li @click="filterChoice">Least comments</li>
       </ul>
     </div>
     <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
@@ -33,27 +34,31 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      isFiltered: null,
       filteredMenu: false,
     };
   },
   methods: {
+    ...mapMutations(['CHANGE_FILTER']),
     filterChoice(e) {
-      if (!e.target) {
-        this.isFiltered = e;
-        return;
-      }
-      this.isFiltered = e.target.innerText;
+      console.log(e.target.innerText)
+
+      this.filteredBy = e.target.innerText;
+      this.CHANGE_FILTER(this.filteredBy);
+      
     },
     toggleFilter() {
       this.filteredMenu = !this.filteredMenu;
     },
   },
+  computed:{
+    ...mapGetters(['GET_FILTER']),
+  },
   created() {
-    this.filterChoice("Most Upvotes");
+    // this.filterChoice("Most Upvotes");
   },
 };
 </script>
@@ -95,7 +100,7 @@ export default {
   color: black;
   background: #fefefe;
   align-content: flex-start;
-  margin-top: 175px;
+  margin-top: 215px;
   margin-left: 50px;
   border-radius: 10px;
   border: 1px darkslategray solid;

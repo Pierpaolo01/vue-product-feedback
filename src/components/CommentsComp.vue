@@ -2,7 +2,7 @@
 <div class="heading flex flex-column">
     <div class="heading flex">
         <div class="user-info flex">
-            <img :src="url" alt="user image">
+            <img src="../../public/user-images/image-thomas.jpg" alt="user image">
             <div class="user-names flex flex-column">
                 <h5> {{user.name}} </h5>
                 <p> @{{user.username}} </p>
@@ -30,7 +30,7 @@ export default {
     },
     computed:{
         userImgUrl(){
-            return "." + this.user.image;
+            return "../../public/" + this.user.image;
         }
     }
 }
