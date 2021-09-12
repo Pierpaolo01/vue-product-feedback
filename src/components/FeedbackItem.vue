@@ -1,9 +1,10 @@
 <template>
-  <li class="feedback-container">
-    <h3>{{ title }}</h3>
-    <p>{{ description }}</p>
-    <h5>{{ category }}</h5>
-    
+  <router-link :to="'/feedback/' + id">
+    <li class="feedback-container">
+      <h3>{{ title }}</h3>
+      <p>{{ description }}</p>
+      <h5>{{ category }}</h5>
+
       <button id="upVoteCounter">
         <img src="@/assets/icon-arrow-up.svg" alt="upvote" />
         <strong>{{ upvotes }}</strong>
@@ -12,8 +13,8 @@
         <img src="@/assets/icon-comments.svg" alt="comments" />
         <span>{{ commentsLength }}</span>
       </button>
-  
-  </li>
+    </li>
+  </router-link>
 </template>
 
 <script>
@@ -56,6 +57,12 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: black;
+}
 .feedback-container {
   position: relative;
   display: grid;
@@ -81,13 +88,12 @@ export default {
   }
   .feedback-container p {
     /* text-align: center; */
-    
+
     margin-left: 25px;
   }
-   .feedback-container h3 {
-     margin-left: 25px !important;
-   }
-
+  .feedback-container h3 {
+    margin-left: 25px !important;
+  }
 }
 
 .feedback-container h3 {
