@@ -1,5 +1,9 @@
 <template>
   <section class="toolbar flex">
+    <div class="suggestions" v-if="!isMobile">
+      <img src="@/assets/suggestions/icon-suggestions.svg" alt="suggestion-icon" class="suggestion-icon">
+      {{listLength}}<strong> Suggestions</strong> 
+    </div>
     <div class="filter flex" @click="toggleFilter">
       <div>
         <span>
@@ -22,11 +26,10 @@
         />
       </div>
       <ul v-show="filteredMenu" class="filter-menu">
-        <li @click="filterChoice">Default</li>
         <li @click="filterChoice">Most Upvotes</li>
         <li @click="filterChoice">Least Upvotes</li>
-        <li @click="filterChoice">Most comments</li>
-        <li @click="filterChoice">Least comments</li>
+        <li @click="filterChoice">Most Comments</li>
+        <li @click="filterChoice">Least Comments</li>
       </ul>
     </div>
     <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
@@ -36,6 +39,7 @@
 <script>
 import { mapMutations, mapGetters } from "vuex";
 export default {
+  props: ['listLength', 'isMobile'],
   data() {
     return {
       filteredMenu: false,
@@ -44,8 +48,6 @@ export default {
   methods: {
     ...mapMutations(['CHANGE_FILTER']),
     filterChoice(e) {
-      console.log(e.target.innerText)
-
       this.filteredBy = e.target.innerText;
       this.CHANGE_FILTER(this.filteredBy);
       
@@ -58,7 +60,7 @@ export default {
     ...mapGetters(['GET_FILTER']),
   },
   created() {
-    // this.filterChoice("Most Upvotes");
+    
   },
 };
 </script>
@@ -73,6 +75,14 @@ export default {
   color: white;
 }
 
+.suggestions {
+  margin-left: 20px;
+}
+
+.suggestions img{
+  width: 19px;
+  height: 19px;
+}
 .filter {
   align-items: center;
   justify-content: space-between;
@@ -100,7 +110,7 @@ export default {
   color: black;
   background: #fefefe;
   align-content: flex-start;
-  margin-top: 215px;
+  margin-top: 180px;
   margin-left: 50px;
   border-radius: 10px;
   border: 1px darkslategray solid;

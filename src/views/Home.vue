@@ -14,7 +14,7 @@
     </header>
 
     <div class="container">
-      <TheToolbar />
+      <TheToolbar :listLength="displayRequests.length" :isMobile="mobile" />
 
       <ul class="feedback-list">
         <feedback-item
@@ -28,6 +28,17 @@
           :comments="req.comments"
         />
       </ul>
+      <div class="empty flex flex-column" v-if="displayRequests.length <= 0">
+        <img src="@/assets/suggestions/illustration-empty.svg" alt="empty" />
+        <h4>
+          <b>There is no feedback for {{ category }} yet.</b>
+        </h4>
+        <p>
+          Got a suggestion? Found a bug that needs to be squashed? We love
+          hearing about new ideas to improve our app.
+        </p>
+        <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +65,7 @@ export default {
   data() {
     return {
       productRequests: null,
+      categorizedRequests: null,
       mobile: false,
     };
   },
@@ -78,33 +90,88 @@ export default {
       }
       this.productRequests = resData;
     },
+    filterBy(sortType) {
+      console.log(sortType);
+      if (sortType === "Most Upvotes") {
+        this.productRequests.sort(
+          (a, b) => parseFloat(b.upvotes) - parseFloat(a.upvotes)
+        );
+        return;
+      }
+
+      if (sortType === "Least Upvotes") {
+        this.productRequests.sort(
+          (a, b) => parseFloat(a.upvotes) - parseFloat(b.upvotes)
+        );
+        return;
+      }
+
+      if (sortType === "Most Comments") {
+        this.productRequests.sort((a, b) => {
+          if (a.comments === undefined) {
+            a.comments = "";
+          }
+          if (b.comments === undefined) {
+            b.comments = "";
+          }
+
+          return b.comments.length - a.comments.length;
+        });
+
+        return;
+      }
+
+      if (sortType === "Least Comments") {
+        this.productRequests.sort((a, b) => {
+          if (a.comments === undefined) {
+            a.comments = "";
+          }
+          if (b.comments === undefined) {
+            b.comments = "";
+          }
+
+          return a.comments.length - b.comments.length;
+        });
+        return;
+      }
+
+    },
   },
   computed: {
     ...mapGetters(["GET_FILTER", "GET_CATEGORY"]),
 
     displayRequests() {
-      if (this.GET_CATEGORY === "all") {
+      const category = this.GET_CATEGORY;
+      if (category === "all") {
         return this.productRequests;
       }
-      if (this.GET_CATEGORY === "ui") {
+      if (category === "ui") {
         return this.productRequests.filter((cat) => cat.category === "ui");
       }
-      if (this.GET_CATEGORY === "ux") {
+      if (category === "ux") {
         return this.productRequests.filter((cat) => cat.category === "ux");
       }
-      if (this.GET_CATEGORY === "enhancement") {
+      if (category === "enhancement") {
         return this.productRequests.filter(
           (cat) => cat.category === "enhancement"
         );
       }
-      if (this.GET_CATEGORY === "bug") {
+      if (category === "bug") {
         return this.productRequests.filter((cat) => cat.category === "bug");
       }
-      if (this.GET_CATEGORY === "feature") {
+      if (category === "feature") {
         return this.productRequests.filter((cat) => cat.category === "feature");
       }
 
-      return 1;
+      return this.productRequests;
+    },
+    category() {
+      return this.GET_CATEGORY.toUpperCase();
+    },
+  },
+  watch: {
+    GET_FILTER() {
+      this.filterBy(this.GET_FILTER);
     },
   },
   created() {
@@ -120,6 +187,33 @@ export default {
 .feedback-list {
   width: 100%;
   margin: 10px auto;
+}
+
+.empty {
+  height: 350px;
+  background: white;
+  text-align: center;
+  position: relative;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 15px;
+}
+
+.empty p {
+  max-width: 400px;
+}
+
+.add-feebdback {
+  width: 130px;
+  height: 40px;
+  background-color: #ad1fea;
+  border-radius: 10px;
+  border-style: none;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+
+  margin: 0 auto;
 }
 
 @media screen and (min-width: 700px) and (max-width: 1099px) {

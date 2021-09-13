@@ -13,22 +13,23 @@
     />
     <h1 v-else>LOADING...</h1>
 
-    <section class="comments" v-if="commentsLength > 0">
+    <section class="comments" >
       <header class="flex">
-        <h3>{{ commentsLength }} comments</h3>
+        <h3 v-if="currentFeedback.comments" >{{ commentsLength }} comments</h3>
+        <h3 v-else> No comments yet!</h3>
       </header>
 
-      <CommentsComp
-        v-for="comment in currentFeedback.comments"
-        :key="comment.id"
-        :id="comment.id"
-        :content="comment.content"
-        :user="comment.user"
-      />
+      <div v-if="currentFeedback.comments">
+        <CommentsComp
+          v-for="comment in currentFeedback.comments"
+          :key="comment.id"
+          :id="comment.id"
+          :content="comment.content"
+          :user="comment.user"
+        />
+      </div>
     </section>
-    <section v-else>
-        <h1>NO COMMENTS YET</h1>
-    </section>
+    
   </div>
 </template>
 
@@ -64,7 +65,6 @@ export default {
   },
   computed: {
     commentsLength() {
-
       return this.currentFeedback.comments.length;
     },
   },
