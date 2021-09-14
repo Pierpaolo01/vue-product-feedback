@@ -3,7 +3,8 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     filter: "Default",
-    category: "all"
+    category: "all",
+    appendRequestTo: null,
   },
   mutations: {
     CHANGE_FILTER(state, payload){
@@ -12,6 +13,9 @@ export default createStore({
     CHANGE_CATEGORY(state, payload){
       state.category = payload;
     },
+    CHANGE_TOTAL(state, payload){
+      state.appendRequestTo = payload;
+    }
   }, 
   getters: {
     GET_FILTER(state){
@@ -19,6 +23,11 @@ export default createStore({
     },
     GET_CATEGORY(state){
       return state.category;
+    },
+    GET_TOTAL(state){
+      return state.appendRequestTo;
     }
   }
 });
+
+

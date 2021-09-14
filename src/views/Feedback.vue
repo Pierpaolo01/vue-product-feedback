@@ -1,9 +1,11 @@
 <template>
   <div class="container flex flex-column">
     <FeedbackToolbar />
-
+    
+    <h1 v-if="isLoading" >LOADING...</h1>
+    <div v-else>
     <FeebackItem
-      v-if="!isLoading"
+      
       :id="currentFeedback.id"
       :title="currentFeedback.title"
       :description="currentFeedback.description"
@@ -11,7 +13,7 @@
       :upvotes="currentFeedback.upvotes"
       :comments="currentFeedback.comments"
     />
-    <h1 v-else>LOADING...</h1>
+    
 
     <section class="comments" >
       <header class="flex">
@@ -29,6 +31,7 @@
         />
       </div>
     </section>
+    </div>
     
   </div>
 </template>
@@ -41,7 +44,7 @@ export default {
   components: { FeedbackToolbar, FeebackItem, CommentsComp },
   data() {
     return {
-      isLoading: null,
+      isLoading: true,
       currentFeedback: null,
     };
   },
@@ -60,15 +63,22 @@ export default {
       this.isLoading = false;
       this.currentFeedback = item;
 
-      console.log(item);
     },
   },
   computed: {
+    comments(){
+      if(this.currentFeedback != null){
+        return this.currentFeedback.comments;
+      }
+      return 'sefsfsd';
+    },
     commentsLength() {
+      
       return this.currentFeedback.comments.length;
     },
   },
   created() {
+    
     this.getCurrentFeedback();
   },
 };

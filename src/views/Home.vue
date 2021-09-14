@@ -37,7 +37,9 @@
           Got a suggestion? Found a bug that needs to be squashed? We love
           hearing about new ideas to improve our app.
         </p>
-        <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
+        <router-link to="/add">
+          <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -50,7 +52,7 @@ import TheToolbar from "@/components/navigation/TheToolbar.vue";
 import TheLogo from "@/components/drawers/TheLogo.vue";
 import FilterButtons from "@/components/drawers/FilterButtons.vue";
 import RoadMap from "../components/drawers/RoadMap.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Home",
@@ -70,6 +72,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["CHANGE_TOTAL"]),
     checkScreen() {
       const windowWidth = window.innerWidth;
       if (windowWidth > 700) {
@@ -89,7 +92,9 @@ export default {
         return;
       }
       this.productRequests = resData;
+      this.CHANGE_TOTAL(this.productRequests.length);
     },
+
     filterBy(sortType) {
       console.log(sortType);
       if (sortType === "Most Upvotes") {
@@ -134,7 +139,6 @@ export default {
         });
         return;
       }
-
     },
   },
   computed: {
@@ -142,28 +146,34 @@ export default {
 
     displayRequests() {
       const category = this.GET_CATEGORY;
-      if (category === "all") {
-        return this.productRequests;
-      }
-      if (category === "ui") {
-        return this.productRequests.filter((cat) => cat.category === "ui");
-      }
-      if (category === "ux") {
-        return this.productRequests.filter((cat) => cat.category === "ux");
-      }
-      if (category === "enhancement") {
-        return this.productRequests.filter(
-          (cat) => cat.category === "enhancement"
-        );
-      }
-      if (category === "bug") {
-        return this.productRequests.filter((cat) => cat.category === "bug");
-      }
-      if (category === "feature") {
-        return this.productRequests.filter((cat) => cat.category === "feature");
-      }
-
+      if (this.productRequests != null) {
+        if (category === "all") {
+          return this.productRequests;
+        }
+        if (category === "ui") {
+          return this.productRequests.filter((cat) => cat.category === "ui");
+        }
+        if (category === "ux") {
+          return this.productRequests.filter((cat) => cat.category === "ux");
+        }
+        if (category === "enhancement") {
+          return this.productRequests.filter(
+            (cat) => cat.category === "enhancement"
+          );
+        }
+        if (category === "bug") {
+          return this.productRequests.filter((cat) => cat.category === "bug");
+        }
+        if (category === "feature") {
+          return this.productRequests.filter(
+            (cat) => cat.category === "feature"
+          );
+        }
+      
+      
       return this.productRequests;
+      }
+      return "";
     },
     category() {
       return this.GET_CATEGORY.toUpperCase();

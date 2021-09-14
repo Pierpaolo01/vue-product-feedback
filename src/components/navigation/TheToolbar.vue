@@ -32,7 +32,10 @@
         <li @click="filterChoice">Least Comments</li>
       </ul>
     </div>
-    <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
+    <router-link to="/add">
+      <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
+    </router-link>
+    
   </section>
 </template>
 
@@ -77,6 +80,11 @@ export default {
 
 .suggestions {
   margin-left: 20px;
+}
+
+.arrow-down {
+  margin-left: 5px;
+  margin-bottom: 2px;
 }
 
 .suggestions img{

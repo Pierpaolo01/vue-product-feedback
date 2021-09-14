@@ -6,8 +6,9 @@
         Go Back
       </button>
     </router-link>
-
-    <button class="edit">Edit Feedback</button>
+    <router-link to="/edit">
+      <button class="edit">Edit Feedback</button>
+    </router-link>
   </div>
 </template>
 

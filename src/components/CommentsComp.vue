@@ -2,7 +2,7 @@
 <div class="heading flex flex-column">
     <div class="heading flex">
         <div class="user-info flex">
-            <img src="../../public/user-images/image-thomas.jpg" alt="user image">
+            <img v-bind:src="userImgUrl" alt="user image">
             <div class="user-names flex flex-column">
                 <h5> {{user.name}} </h5>
                 <p> @{{user.username}} </p>
@@ -30,23 +30,23 @@ export default {
     },
     computed:{
         userImgUrl(){
-            return "../../public/" + this.user.image;
+            return "@" + this.user.image.slice(1);
         }
     }
 }
 </script>
 
 <style scoped>
-/* .container{}o */
 .heading {
     width: 100%;
     justify-content: space-between;
-    /* margin-bottom: ; */
 }
 .user-names{
     margin: 10px;
 }
 img{
+    height: 40px;
+    width: 40px;
     margin: 10px;
 }
 
@@ -56,7 +56,7 @@ img{
 }
 
 .content {
-    margin: 20px 0px 10px 95px;
+    margin: 20px 0px 10px 75px;
 }
 
 </style>
