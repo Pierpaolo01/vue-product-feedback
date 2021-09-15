@@ -6,11 +6,22 @@
         Go Back
       </button>
     </router-link>
-    <router-link to="/edit">
+    <router-link :to="toUrl">
       <button class="edit">Edit Feedback</button>
     </router-link>
   </div>
 </template>
+
+<script>
+export default {
+  props: ["id"],
+  computed: {
+    toUrl(){
+      return `/edit`;
+    },
+  }
+}
+</script>
 
 <style scoped>
 .heading {

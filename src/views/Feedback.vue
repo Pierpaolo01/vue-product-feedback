@@ -1,38 +1,34 @@
 <template>
   <div class="container flex flex-column">
-    <FeedbackToolbar />
-    
-    <h1 v-if="isLoading" >LOADING...</h1>
+    <h1 v-if="isLoading">LOADING...</h1>
     <div v-else>
-    <FeebackItem
-      
-      :id="currentFeedback.id"
-      :title="currentFeedback.title"
-      :description="currentFeedback.description"
-      :category="currentFeedback.category"
-      :upvotes="currentFeedback.upvotes"
-      :comments="currentFeedback.comments"
-    />
-    
+      <FeedbackToolbar :id="currentFeedback.id" />
+      <FeebackItem
+        :id="currentFeedback.id"
+        :title="currentFeedback.title"
+        :description="currentFeedback.description"
+        :category="currentFeedback.category"
+        :upvotes="currentFeedback.upvotes"
+        :comments="currentFeedback.comments"
+      />
 
-    <section class="comments" >
-      <header class="flex">
-        <h3 v-if="currentFeedback.comments" >{{ commentsLength }} comments</h3>
-        <h3 v-else> No comments yet!</h3>
-      </header>
+      <section class="comments">
+        <header class="flex">
+          <h3 v-if="currentFeedback.comments">{{ commentsLength }} comments</h3>
+          <h3 v-else>No comments yet!</h3>
+        </header>
 
-      <div v-if="currentFeedback.comments">
-        <CommentsComp
-          v-for="comment in currentFeedback.comments"
-          :key="comment.id"
-          :id="comment.id"
-          :content="comment.content"
-          :user="comment.user"
-        />
-      </div>
-    </section>
+        <div v-if="currentFeedback.comments">
+          <CommentsComp
+            v-for="comment in currentFeedback.comments"
+            :key="comment.id"
+            :id="comment.id"
+            :content="comment.content"
+            :user="comment.user"
+          />
+        </div>
+      </section>
     </div>
-    
   </div>
 </template>
 
@@ -40,6 +36,8 @@
 import FeebackItem from "../components/FeedbackItem.vue";
 import FeedbackToolbar from "../components/navigation/FeedbackToolbar.vue";
 import CommentsComp from "../components/CommentsComp.vue";
+import { mapMutations } from "vuex";
+
 export default {
   components: { FeedbackToolbar, FeebackItem, CommentsComp },
   data() {
@@ -49,6 +47,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["CHANGE_REQUEST"]),
     async getCurrentFeedback() {
       this.isLoading = true;
       const response = await fetch(
@@ -62,18 +61,17 @@ export default {
 
       this.isLoading = false;
       this.currentFeedback = item;
-
+      this.CHANGE_REQUEST(this.currentFeedback)
     },
   },
   computed: {
-    comments(){
-      if(this.currentFeedback != null){
+    comments() {
+      if (this.currentFeedback != null) {
         return this.currentFeedback.comments;
       }
-      return 'sefsfsd';
+      return "sefsfsd";
     },
     commentsLength() {
-      
       return this.currentFeedback.comments.length;
     },
   },

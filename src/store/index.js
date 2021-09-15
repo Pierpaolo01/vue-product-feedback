@@ -4,6 +4,7 @@ export default createStore({
   state: {
     filter: "Default",
     category: "all",
+    selectedRequest: null,
     appendRequestTo: null,
   },
   mutations: {
@@ -15,7 +16,11 @@ export default createStore({
     },
     CHANGE_TOTAL(state, payload){
       state.appendRequestTo = payload;
+    },
+    CHANGE_REQUEST(state, payload){
+      state.selectedRequest = payload;
     }
+
   }, 
   getters: {
     GET_FILTER(state){
@@ -26,7 +31,11 @@ export default createStore({
     },
     GET_TOTAL(state){
       return state.appendRequestTo;
+    },
+    GET_REQUEST(state){
+      return state.selectedRequest;
     }
+
   }
 });
 

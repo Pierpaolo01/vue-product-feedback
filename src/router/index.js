@@ -14,15 +14,17 @@ const routes = [
     name: "Feedback",
     component: Feedback,
     props: true,
-    children: [
-      {path: "/edit", name: 'EditFeedback', component: AddFeedback},
-    ],
   },
   {
     path: "/add",
     name: "AddFeedback",
     component: AddFeedback,
   },
+  {
+    path: "/edit",
+    name: "EditFeedback",
+    component: AddFeedback
+  }
 ];
 
 const router = createRouter({

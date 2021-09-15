@@ -1,7 +1,14 @@
 <template>
   <div class="container flex flex-column">
     <nav>
-      <router-link to="/">
+      <router-link to="/" v-if="$route.path === '/add'">
+        <button class="backBtn">
+          <img src="@/assets/icon-arrow-left.svg" alt="back-arrow" />
+          <strong>Go Back</strong>
+        </button>
+      </router-link>
+
+      <router-link :to="backPath" v-if="$route.path === '/edit'">
         <button class="backBtn">
           <img src="@/assets/icon-arrow-left.svg" alt="back-arrow" />
           <strong>Go Back</strong>
@@ -81,10 +88,7 @@
           <h3>Update Status</h3>
           <p>Change feature state</p>
         </label>
-        <div
-          class="inputs drop flex"
-           @click="statusMenu = !statusMenu"
-        >
+        <div class="inputs drop flex" @click="statusMenu = !statusMenu">
           <span>{{ status }}</span>
           <img
             src="@/assets/icon-arrow-down.svg"
@@ -100,7 +104,11 @@
           />
         </div>
       </div>
-      <div class="drop-down" v-if="statusMenu" @click="clearValidty('category')">
+      <div
+        class="drop-down"
+        v-if="statusMenu"
+        @click="clearValidty('category')"
+      >
         <ul>
           <li @click="selectStatus">Suggestion</li>
           <li @click="selectStatus">Planned</li>
@@ -132,9 +140,21 @@
         Please fix above issue to submit form
       </p>
 
-      <div class="controls">
-        <button type="button" class="cancel">Cancel</button>
-        <button type="submit" class="add-feebdback">Add Feedback</button>
+      <div class="controls flex">
+        <button class="delete" v-if="$route.path === '/edit'">Delete</button>
+        <div>
+          <button type="button" class="cancel">Cancel</button>
+          <button
+            type="submit"
+            class="add-feebdback"
+            v-if="$route.path === '/add'"
+          >
+            Add Feedback
+          </button>
+          <button type="submit" class="add-feebdback" v-else>
+            Edit Feedback
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -160,18 +180,20 @@ export default {
         isValid: true,
       },
       status: "suggestion",
+      upvotes: 0,
       formIsValid: true,
+      backPath: null,
     };
   },
   methods: {
-    ...mapGetters(["GET_TOTAL"]),
+    ...mapGetters(["GET_TOTAL", "GET_REQUEST"]),
     selectCategory(e) {
       this.category.val = e.target.innerText;
       this.dropMenu = !this.dropMenu;
     },
-    selectStatus(e){
-        this.status = e.target.innerText.toLowerCase();
-        this.statusMenu = !this.statusMenu;
+    selectStatus(e) {
+      this.status = e.target.innerText.toLowerCase();
+      this.statusMenu = !this.statusMenu;
     },
     validateForm() {
       this.formIsValid = true;
@@ -194,7 +216,7 @@ export default {
         this[input].isValid = true;
       }
     },
-    submitForm() {
+    addRequest() {
       this.validateForm();
 
       if (!this.formIsValid) {
@@ -202,21 +224,38 @@ export default {
       }
       this.addFeedback();
     },
+    submitFormqwerty() {
+      if (this.$route.path === "/add") {
+        this.addRequest();
+        return;
+      }
 
-    async addFeedback() {
+      if (this.$route.path === "/edit") {
+        this.editFeedback();
+        return;
+      }
+    },
+    async submitForm() {
+    //   let fetchMethod = "PUT";
+      let requestNumber = this.GET_TOTAL();
+
+      if (this.$route.path === "/edit") {
+        // fetchMethod = "UPDATE";
+        requestNumber = this.GET_REQUEST().id;
+      }
+
       const data = {
-        id: new Date(),
+        id: requestNumber,
         title: this.title.val,
         category: this.category.val,
         description: this.description.val,
         status: this.status,
-        upvotes: 0,
+        upvotes: this.upvotes,
       };
-
-      console.log(this.GET_TOTAL());
+      console.log(this.GET_TOTAL);
       try {
         const response = await fetch(
-          `https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests/${this.GET_TOTAL()}.json`,
+          `https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests/${requestNumber-1}.json`,
           {
             method: "PUT",
             body: JSON.stringify(data),
@@ -227,11 +266,26 @@ export default {
 
         if (!response.ok) {
           throw new Error(resData.message || "failed to send feedback.");
+        } else {
+          this.$router.push({ path: "/" });
         }
       } catch (error) {
-        console.log(error);
+        alert(error);
       }
     },
+
+    async editFeedback() {},
+  },
+  created() {
+    if (this.$route.path === "/edit") {
+      console.log(this.GET_REQUEST().title);
+      this.title.val = this.GET_REQUEST().title;
+      this.category.val = this.GET_REQUEST().category;
+      this.description.val = this.GET_REQUEST().description;
+      this.status = this.GET_REQUEST().status;
+      this.backPath = "/feedback/" + this.GET_REQUEST().id;
+      this.upvotes = this.GET_REQUEST().upvotes;
+    }
   },
 };
 </script>
@@ -246,14 +300,26 @@ export default {
   max-width: 600px;
 }
 
+.controls {
+  justify-content: space-between;
+}
+
+.delete {
+  background-color: red;
+}
+.delete:hover {
+  background-color: rgb(255, 110, 110);
+}
+
 .status {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 textarea {
   resize: none;
   padding: 10px;
   height: 100px !important;
+  font-size: 15px;
 }
 
 .cancel {
