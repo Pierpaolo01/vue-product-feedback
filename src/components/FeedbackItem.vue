@@ -21,7 +21,7 @@
 export default {
   props: {
     id: {
-      required: true,
+      required: false,
     },
     title: {
       type: String,

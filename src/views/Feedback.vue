@@ -48,6 +48,7 @@ export default {
   },
   methods: {
     ...mapMutations(["CHANGE_REQUEST"]),
+    
     async getCurrentFeedback() {
       this.isLoading = true;
       const response = await fetch(
@@ -56,7 +57,7 @@ export default {
       const resData = await response.json();
 
       const item = resData.find(
-        (feedItem) => feedItem.id == this.$route.params.id
+        (feedItem) => feedItem != null && feedItem.id == this.$route.params.id 
       );
 
       this.isLoading = false;
@@ -85,6 +86,7 @@ export default {
 <style scoped>
 .container {
   width: 50%;
+  max-width: 750px;
   margin: 40px auto;
   justify-content: space-between;
 }

@@ -18,8 +18,7 @@
 
       <ul class="feedback-list">
         <feedback-item
-          v-for="req in displayRequests"
-          :key="req.id"
+          v-for="req in displayRequests" :key="req.id"
           :id="req.id"
           :title="req.title"
           :description="req.description"
@@ -140,40 +139,52 @@ export default {
         return;
       }
     },
-  },
-  computed: {
-    ...mapGetters(["GET_FILTER", "GET_CATEGORY"]),
-
-    displayRequests() {
+    filterRequests(){
       const category = this.GET_CATEGORY;
+      console.log(this.productRequests)
       if (this.productRequests != null) {
         if (category === "all") {
-          return this.productRequests;
+          return this.productRequests.filter(item => item != null);
         }
         if (category === "ui") {
-          return this.productRequests.filter((cat) => cat.category === "ui");
+          return this.productRequests.filter((cat) => cat.category  === "ui" && cat != null);
         }
         if (category === "ux") {
-          return this.productRequests.filter((cat) => cat.category === "ux");
+          return this.productRequests.filter((cat) => cat.category === "ux" && cat != null);
         }
         if (category === "enhancement") {
           return this.productRequests.filter(
             (cat) => cat.category === "enhancement"
+            && cat != null
           );
         }
         if (category === "bug") {
-          return this.productRequests.filter((cat) => cat.category === "bug");
+          return this.productRequests.filter((cat) => cat.category === "bug" && cat != null);
         }
         if (category === "feature") {
           return this.productRequests.filter(
             (cat) => cat.category === "feature"
+            && cat != null
           );
         }
       
       
       return this.productRequests;
       }
-      return "";
+      
+    },
+  },
+  computed: {
+    ...mapGetters(["GET_FILTER", "GET_CATEGORY"]),
+
+    displayRequests() {
+      let filteredRequests = "";
+      if (this.productRequests != null ) {
+        filteredRequests = this.filterRequests()
+        console.log(filteredRequests.length)
+      }
+      
+      return filteredRequests;
     },
     category() {
       return this.GET_CATEGORY.toUpperCase();

@@ -141,9 +141,19 @@
       </p>
 
       <div class="controls flex">
-        <button class="delete" v-if="$route.path === '/edit'">Delete</button>
+        <button
+          @click="deleteFeedback"
+          class="delete"
+          type="button"
+          v-if="$route.path === '/edit'"
+        >
+          Delete
+        </button>
         <div>
-          <button type="button" class="cancel">Cancel</button>
+          <router-link :to="backPath">
+            <button type="button" class="cancel">Cancel</button>
+          </router-link>
+
           <button
             type="submit"
             class="add-feebdback"
@@ -224,24 +234,11 @@ export default {
       }
       this.addFeedback();
     },
-    submitFormqwerty() {
-      if (this.$route.path === "/add") {
-        this.addRequest();
-        return;
-      }
-
-      if (this.$route.path === "/edit") {
-        this.editFeedback();
-        return;
-      }
-    },
     async submitForm() {
-    //   let fetchMethod = "PUT";
       let requestNumber = this.GET_TOTAL();
 
       if (this.$route.path === "/edit") {
-        // fetchMethod = "UPDATE";
-        requestNumber = this.GET_REQUEST().id;
+        requestNumber = this.GET_REQUEST().id -1;
       }
 
       const data = {
@@ -255,7 +252,9 @@ export default {
       console.log(this.GET_TOTAL);
       try {
         const response = await fetch(
-          `https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests/${requestNumber-1}.json`,
+          `https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests/${
+            requestNumber
+          }.json`,
           {
             method: "PUT",
             body: JSON.stringify(data),
@@ -273,8 +272,35 @@ export default {
         alert(error);
       }
     },
-
-    async editFeedback() {},
+    async deleteFeedback() {
+      const requestNumber = this.GET_REQUEST().id;
+      const data = {
+        id: requestNumber,
+        title: this.title.val,
+        category: this.category.val,
+        description: this.description.val,
+        status: this.status,
+        upvotes: this.upvotes,
+      };
+      try {
+        const response = await fetch(
+          `https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests/${this.GET_REQUEST().id -1}.json`, {
+            method: "DELETE",
+            body: JSON.stringify(data),
+          }
+        );
+        console.log(response)
+        const resData = await response.json();
+        console.log(resData)
+        if (!response.ok) {
+          throw new Error(resData.message || "Failed to delete feedback.");
+        } else {
+          this.$router.push({ path: "/" });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   created() {
     if (this.$route.path === "/edit") {
@@ -285,6 +311,8 @@ export default {
       this.status = this.GET_REQUEST().status;
       this.backPath = "/feedback/" + this.GET_REQUEST().id;
       this.upvotes = this.GET_REQUEST().upvotes;
+    } else {
+      this.backPath = "/";
     }
   },
 };
