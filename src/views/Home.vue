@@ -141,7 +141,6 @@ export default {
     },
     filterRequests(){
       const category = this.GET_CATEGORY;
-      console.log(this.productRequests)
       if (this.productRequests != null) {
         if (category === "all") {
           return this.productRequests.filter(item => item != null);
@@ -180,8 +179,7 @@ export default {
     displayRequests() {
       let filteredRequests = "";
       if (this.productRequests != null ) {
-        filteredRequests = this.filterRequests()
-        console.log(filteredRequests.length)
+        filteredRequests = this.filterRequests();
       }
       
       return filteredRequests;

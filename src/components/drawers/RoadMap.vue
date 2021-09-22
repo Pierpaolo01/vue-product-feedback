@@ -3,7 +3,10 @@
     <div class="container flex flex-column">
       <header class="flex">
         <h1>RoadMap</h1>
-        <a href="#">View</a>
+        <router-link to="/roadmap">
+          <span>View</span>
+        </router-link>
+        
       </header>
       <ul>
         <li class="flex planned">

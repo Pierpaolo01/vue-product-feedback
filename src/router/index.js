@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Feedback from "../views/Feedback.vue";
 import AddFeedback from "../views/AddFeedback.vue";
+import Roadmap from "../views/Roadmap.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/edit",
     name: "EditFeedback",
     component: AddFeedback
+  },
+  {
+    path: "/roadmap",
+    name: "Roadmap",
+    component: Roadmap,
   }
 ];
 

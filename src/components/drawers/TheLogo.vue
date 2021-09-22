@@ -1,7 +1,7 @@
 <template>
   <base-card>
     <div class="container">
-      <h4>Frontend Mentor</h4>
+      <h4>Pierpaolo Pascarella</h4>
       <h5>Feedback Board</h5>
     </div>
   </base-card>
