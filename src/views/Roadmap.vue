@@ -62,7 +62,6 @@ export default {
         console.log("error");
         return;
       }
-      console.log(resData);
       this.productRequests = resData;
     },
     checkScreen() {

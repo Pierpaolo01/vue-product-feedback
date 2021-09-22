@@ -192,6 +192,7 @@ export default {
       status: "suggestion",
       upvotes: 0,
       formIsValid: true,
+      requestNumber: null,
       backPath: null,
     };
   },
@@ -235,25 +236,24 @@ export default {
       this.addFeedback();
     },
     async submitForm() {
-      let requestNumber = this.GET_TOTAL();
+      this.requestNumber = this.GET_TOTAL();
 
       if (this.$route.path === "/edit") {
-        requestNumber = this.GET_REQUEST().id -1;
+        this.requestNumber = this.GET_REQUEST().id;
       }
 
       const data = {
-        id: requestNumber,
+        id: this.requestNumber,
         title: this.title.val,
         category: this.category.val,
         description: this.description.val,
         status: this.status,
         upvotes: this.upvotes,
       };
-      console.log(this.GET_TOTAL);
       try {
         const response = await fetch(
           `https://vue-feedback-board-default-rtdb.europe-west1.firebasedatabase.app/productRequests/${
-            requestNumber
+            this.requestNumber -1
           }.json`,
           {
             method: "PUT",
@@ -289,9 +289,7 @@ export default {
             body: JSON.stringify(data),
           }
         );
-        console.log(response)
         const resData = await response.json();
-        console.log(resData)
         if (!response.ok) {
           throw new Error(resData.message || "Failed to delete feedback.");
         } else {
@@ -304,7 +302,6 @@ export default {
   },
   created() {
     if (this.$route.path === "/edit") {
-      console.log(this.GET_REQUEST().title);
       this.title.val = this.GET_REQUEST().title;
       this.category.val = this.GET_REQUEST().category;
       this.description.val = this.GET_REQUEST().description;

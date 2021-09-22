@@ -95,7 +95,6 @@ export default {
     },
 
     filterBy(sortType) {
-      console.log(sortType);
       if (sortType === "Most Upvotes") {
         this.productRequests.sort(
           (a, b) => parseFloat(b.upvotes) - parseFloat(a.upvotes)
