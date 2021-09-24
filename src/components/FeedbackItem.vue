@@ -1,6 +1,6 @@
 <template>
-  <router-link :to="'/feedback/' + id">
-    <li class="feedback-container">
+  <li class="feedback-container" :class="classType">
+    <router-link :to="'/feedback/' + id" class="feedback-comp">
       <h3>{{ title }}</h3>
       <p>{{ description }}</p>
       <h5>{{ category }}</h5>
@@ -13,8 +13,8 @@
         <img src="@/assets/icon-comments.svg" alt="comments" />
         <span>{{ commentsLength }}</span>
       </button>
-    </li>
-  </router-link>
+    </router-link>
+  </li>
 </template>
 
 <script>
@@ -43,6 +43,10 @@ export default {
       type: Array,
       required: false,
     },
+    classType: {
+      type: String,
+      required: false,
+    }
   },
   computed: {
     commentsLength() {
@@ -58,11 +62,6 @@ export default {
 <style scoped>
 a {
   text-decoration: none;
-}
-a:hover {
-  color: black;
-}
-.feedback-container {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -76,6 +75,16 @@ a:hover {
   padding: 25px;
   margin: 0px auto 15px auto;
 }
+a:hover {
+  color: black;
+}
+.feedback-container {
+  list-style-type: none;
+  border-radius: 20px;
+  padding-top: 10px;
+}
+
+
 
 @media screen and (min-width: 700px) {
   .feedback-container {
@@ -130,6 +139,7 @@ a:hover {
   border-style: none;
   align-items: center;
   grid-area: upvotes;
+  max-height: 60px;
 }
 #upVoteCounter img {
   height: 10px;
