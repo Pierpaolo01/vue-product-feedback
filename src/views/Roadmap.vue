@@ -2,19 +2,25 @@
   <div class="container">
     <header class="flex">
       <div class="left">
-        <button class="backBtn">
-          <img src="@/assets/icon-arrow-left.svg" alt="back-arrow" />
-          <strong>Go Back</strong>
-        </button>
+        <router-link to="/">
+          <button class="backBtn">
+            <img src="@/assets/icon-arrow-left.svg" alt="back-arrow" />
+            <strong>Go Back</strong>
+          </button>
+        </router-link>
         <h3>Roadmap</h3>
       </div>
-      <button class="add-feebdback"><strong>+ Add Feeback</strong></button>
+      <router-link to="/add">
+        <button class="add-feebdback">
+          <strong>+ Add Feeback</strong>
+        </button>
+      </router-link>
     </header>
 
     <main v-if="mobile">
       <nav class="flex">
         <div
-          :class="{ activeP : filter === 'planned' }"
+          :class="{ activeP: filter === 'planned' }"
           @click="filter = 'planned'"
         >
           <span
@@ -29,10 +35,7 @@
             ><strong>In-Progress ({{ progressList.length }}) </strong>
           </span>
         </div>
-        <div
-          @click="filter = 'live'"
-          :class="{ activeL: filter === 'live' }"
-        >
+        <div @click="filter = 'live'" :class="{ activeL: filter === 'live' }">
           <span
             ><strong>Live ({{ liveList.length }}) </strong></span
           >
@@ -184,7 +187,6 @@ nav div {
   padding: 25px;
 }
 
-
 nav div {
   color: grey;
 }
@@ -247,11 +249,11 @@ h3 {
   position: absolute;
 }
 
-.title{
+.title {
   margin: 15px 0 10px;
 }
 .title strong {
-margin: 5px 0;
+  margin: 5px 0;
 }
 .title p {
   margin: 10px 0;
@@ -259,31 +261,30 @@ margin: 5px 0;
 
 .activeP {
   color: black !important;
-  border-bottom: 3px solid rgb(244,159,134);;
+  border-bottom: 3px solid rgb(244, 159, 134);
 }
 
 .activeI {
   color: black !important;
-  border-bottom: 3px solid #AD1FEA;
+  border-bottom: 3px solid #ad1fea;
 }
 
 .activeL {
   color: black !important;
-  border-bottom: 3px solid #61BDFA;
+  border-bottom: 3px solid #61bdfa;
 }
 
 .planned {
-  background-color: rgb(244,159,134);
+  background-color: rgb(244, 159, 134);
 }
 
 .in-progress {
-  background-color: #AD1FEA;
+  background-color: #ad1fea;
 }
 
 .live {
-  background-color: #61BDFA;
+  background-color: #61bdfa;
 }
-
 
 @media screen and (min-width: 700px) {
   .container {
@@ -308,6 +309,5 @@ margin: 5px 0;
   .live {
     max-width: 380px;
   }
-
 }
 </style>
