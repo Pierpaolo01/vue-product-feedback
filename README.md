@@ -17,7 +17,6 @@ Here you can view the original Figma design file - [View-files](https://www.figm
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Author](#author)
-- [Acknowledgments](#acknowledgments)
 
 ## Overview
 
@@ -46,7 +45,7 @@ Users should be able to:
 - [VueJs 3](https://vuejs.org/) - JS library
 - [Router](https://router.vuejs.org/) - Routing for Vue
 - [VueX](https://vuex.vuejs.org/) - For Statemanagement
-- [VueX](https://firebase.com) - Backend
+- [Firebase](https://firebase.com) - Backend
 - Mobile-first workflow
 - CSS Grid
 - Flexbox
