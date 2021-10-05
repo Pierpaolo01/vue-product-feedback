@@ -1,6 +1,6 @@
 # Product feedback app
 
-This application is a forumn for users to post feedback / request features / warn of existing bugs.
+This application is a forum for users to post feedback / request features / warn of existing bugs.
 
 Here is a live link to view the project live - [live-project](http://www.product-feedback.xyz)
 
